@@ -1,0 +1,7 @@
+node_modules
+*.css
+*.css.map
+public/assets
+assets/img
+*.local
+/includes/DatabaseConnection.php
