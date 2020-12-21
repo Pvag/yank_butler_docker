@@ -1,7 +1,7 @@
 <?php
 
 try {
-    include __DIR__ . '/../includes/autoload.php';
+    include __DIR__ . '/../vendor/autoload.php';
     $route = ltrim(strtok($_SERVER['REQUEST_URI'], '?'), '/');
     $entryPoint = new \Ninja\EntryPoint($route, new \Ijdb\IjdbActions);
     $entryPoint->run();

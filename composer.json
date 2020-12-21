@@ -1,0 +1,19 @@
+{
+    "name": "pvag/libro_php_mysql_yank",
+    "description": "Re-implementing the code in \"PHP & MySQL Ninja...\" book, Yank/Butler",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Paolo Vagnini",
+            "email": "paolondon@gmail.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Ijdb\\": "classes/Ijdb",
+            "Ninja\\" : "classes/Ninja"
+        }
+    }
+}
