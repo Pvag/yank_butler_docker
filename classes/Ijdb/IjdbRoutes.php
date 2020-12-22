@@ -2,9 +2,9 @@
 
 namespace Ijdb;
 
-class IjdbActions
+class IjdbRoutes
 {
-    public function callAction($route)
+    public function getRoutes()
     {
         include __DIR__ . '/../../includes/DatabaseConnection.php';
 
@@ -43,11 +43,6 @@ class IjdbActions
             ]
         ];
 
-        $route = key_exists($route, $routes) ? $route : '';
-
-        $method = $_SERVER['REQUEST_METHOD'];
-        $controller = $routes[$route][$method]['controller'];
-        $action = $routes[$route][$method]['action'];
-        return $controller->$action();
+        return $routes;
     }
 }

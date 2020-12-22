@@ -5,12 +5,14 @@ namespace Ninja;
 class EntryPoint
 {
     private $route;
+    private $method;
     private $routes;
 
-    public function __construct($route, $routes)
+    public function __construct($route, $method, $routesObj)
     {
-        $this->route = $route;
-        $this->routes = $routes;
+        $this->routes = $routesObj->getRoutes();
+        $this->route = key_exists($route, $this->routes) ? $route : ''; // redirect to home, if route does not exist
+        $this->method = $method;
         $this->checkUrl();
     }
 
@@ -33,7 +35,9 @@ class EntryPoint
 
     public function run()
     {
-        $page = $this->routes->callAction($this->route);
+        $controller = $this->routes[$this->route][$this->method]['controller'];
+        $action = $this->routes[$this->route][$this->method]['action'];
+        $page = $controller->$action();
         $title = $page['title'];
         if (isset($page['variables'])) {
             $output = $this->loadTemplate($page['template'], $page['variables']);
