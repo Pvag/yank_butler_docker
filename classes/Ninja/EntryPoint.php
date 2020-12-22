@@ -8,7 +8,7 @@ class EntryPoint
     private $method;
     private $routes;
 
-    public function __construct($route, $method, $routesObj)
+    public function __construct($route, $method, \Ninja\Routes $routesObj)
     {
         $this->routes = $routesObj->getRoutes();
         $this->route = key_exists($route, $this->routes) ? $route : ''; // redirect to home, if route does not exist
