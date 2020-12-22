@@ -59,29 +59,30 @@ class Joke
         ];
     }
 
-    public function edit()
+    public function saveEdit()
     {
-        if (isset($_POST['joke'])) { // after sending the new/edited joke (editjoke.html.php)
-            $joke = $_POST['joke'];
-            $joke['authorid'] = 2; // TODO
-            $joke['jokedate'] = new \DateTime();
-            $this->jokesTable->save($joke);
-            header('Location: /joke/list');
-            exit;
+        $joke = $_POST['joke'];
+        $joke['authorid'] = 2; // TODO
+        $joke['jokedate'] = new \DateTime();
+        $this->jokesTable->save($joke);
+        header('Location: /joke/list');
+        exit;
+    }
+
+    public function save()
+    {
+        if (isset($_GET['jokeid'])) { // edit an existing joke
+            $joke = $this->jokesTable->findById($_GET['jokeid']); // TODO authorid lo posso prendere qui
+            $title = 'Edit Joke'; // if $_GET['jokeid'] was not set: a new joke
         } else {
-            if (isset($_GET['jokeid'])) { // edit an existing joke
-                $joke = $this->jokesTable->findById($_GET['jokeid']); // TODO authorid lo posso prendere qui
-                $title = 'Edit Joke'; // if $_GET['jokeid'] was not set: a new joke
-            } else {
-                $title = 'Add Joke';
-            }
-            return [
-                'title' => $title,
-                'template' => 'editjoke.html.php',
-                'variables' => [
-                    'joke' => $joke ?? ''
-                ]
-            ];
+            $title = 'Add Joke';
         }
+        return [
+            'title' => $title,
+            'template' => 'editjoke.html.php',
+            'variables' => [
+                'joke' => $joke ?? ''
+            ]
+        ];
     }
 }

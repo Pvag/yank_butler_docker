@@ -10,27 +10,44 @@ class IjdbActions
 
         $jokesTable = new \Ninja\DatabaseTable($pdo, 'joke', 'id');
         $authorsTable = new \Ninja\DatabaseTable($pdo, 'author', 'id');
+        $jokeController = new \Ijdb\Controllers\Joke($jokesTable, $authorsTable);
 
-        if ($route === 'joke/list') {
-            $jokeController = new \Ijdb\Controllers\Joke($jokesTable, $authorsTable);
-            $page = $jokeController->list();
-        } else if ($route === 'joke/edit') {
-            $jokeController = new \Ijdb\Controllers\Joke($jokesTable, $authorsTable);
-            $page = $jokeController->edit(); // jokeid was set in url (called from anchor in jokes.html.php)
-        } else if ($route === 'joke/home' || $route === '/') {
-            $jokeController = new \Ijdb\Controllers\Joke($jokesTable, $authorsTable);
-            $page = $jokeController->home();
-        } else if ($route === 'joke/delete') {
-            $jokeController = new \Ijdb\Controllers\Joke($jokesTable, $authorsTable);
-            $page = $jokeController->delete();
-        } else if ($route === 'register') {
-            $registerController = new \Ijdb\Controllers\Register($authorsTable);
-            $page = $registerController->show();
-        } else {
-            $jokeController = new \Ijdb\Controllers\Joke($jokesTable, $authorsTable);
-            $page = $jokeController->home();
-        }
+        $routes = [
+            'joke/edit' => [
+                'POST' => [
+                    'controller' => $jokeController,
+                    'action' => 'saveEdit'
+                ],
+                'GET' => [
+                    'controller' => $jokeController,
+                    'action' => 'save'
+                ]
+            ],
+            'joke/list' => [
+                'GET' => [
+                    'controller' => $jokeController,
+                    'action' => 'list'
+                ]
+            ],
+            'joke/delete' => [
+                'POST' => [
+                    'controller' => $jokeController,
+                    'action' => 'delete'
+                ]
+            ],
+            '' => [
+                'GET' => [
+                    'controller' => $jokeController,
+                    'action' => 'home'
+                ]
+            ]
+        ];
 
-        return $page;
+        $route = key_exists($route, $routes) ? $route : '';
+
+        $method = $_SERVER['REQUEST_METHOD'];
+        $controller = $routes[$route][$method]['controller'];
+        $action = $routes[$route][$method]['action'];
+        return $controller->$action();
     }
 }
