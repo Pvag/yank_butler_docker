@@ -4,5 +4,4 @@ node_modules
 public/assets
 assets/img
 *.local
-/includes/DatabaseConnection.php
 /vendor/
